@@ -23,7 +23,7 @@ class phonebook(QWidget):
         ui_file.close()
 
     def conectDB(self):
-        conn = sqlite3.connect('contacts.db')
+        conn = sqlite3.connect('phonebook/contacts.db')
         c = conn.cursor()
         c.execute('SELECT * FROM contacts')
         c2 = conn.cursor()
