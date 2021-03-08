@@ -60,7 +60,7 @@
      </attribute>
      <column>
       <property name="text">
-       <string>#</string>
+       <string>name</string>
       </property>
       <property name="font">
        <font>
@@ -71,12 +71,12 @@
      </column>
      <column>
       <property name="text">
-       <string>name</string>
+       <string>phone number</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>phone number</string>
+       <string>deleted</string>
       </property>
      </column>
      <column>
@@ -124,7 +124,7 @@
     <string>maryam's PhoneBook</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="add_btn">
    <property name="geometry">
     <rect>
      <x>510</x>
