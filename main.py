@@ -15,28 +15,29 @@ class phonebook(QWidget):
         loader = QUiLoader()
         self.ui = loader.load("form.ui")
         self.ui.show()
-
         self.conectDB()
         self.ui.add_btn.clicked.connect(self.openAddDg)
+        self.ui.del_btn.clicked.connect(self.deleteContact)
+        self.ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
     def conectDB(self):
-        conn = sqlite3.connect('contacts.db')
-        c = conn.cursor()
+        self.conn = sqlite3.connect('contacts.db')
+        c = self.conn.cursor()
         c.execute('SELECT * FROM contacts WHERE deleted = 0')
-        c2 = conn.cursor()
-        c2.execute('SELECT * FROM contacts WHERE deleted = 0')
+        c2 = self.conn.cursor()
+        c2.execute('SELECT name, phonenumber FROM contacts WHERE deleted = 0')
 
         # start show table data
         self.allSQLRows = c.fetchall()
         self.ui.tableWidget.setRowCount(len(self.allSQLRows))
-        self.ui.tableWidget.setColumnCount(3)
+        self.ui.tableWidget.setColumnCount(2)
 
         row = 0
         while True:
             sqlRow = c2.fetchone()
             if sqlRow == None:
                 break
-            for col in range(0, 3):
+            for col in range(0, 2):
                 self.ui.tableWidget.setItem(
                     row, col, QTableWidgetItem(str(sqlRow[col])))
             row += 1
@@ -44,19 +45,37 @@ class phonebook(QWidget):
 
     def openAddDg(self):
         self.addClass = AddContact()
-        self.addClass.load_ui()
+
+    def deleteContact(self, row):
+
+        row = self.ui.tableWidget.currentIndex().row()
+        if row < 0:
+            return
+
+        messageBox = QMessageBox.warning(
+            self,
+            "Warning!",
+            "Do you want to remove the selected contact?",
+            QMessageBox.Ok | QMessageBox.Cancel,
+        )
+
+        if messageBox == QMessageBox.Ok:
+            sql = 'DELETE FROM contacts WHERE phonenumber=?'
+            cur = self.conn.cursor()
+            cur.execute(sql, (self.allSQLRows[row][1],))
+            self.conn.commit()
 
 
 class AddContact(QWidget):
     def __init__(self):
         super(AddContact, self).__init__()
-
         loader = QUiLoader()
         self.ui = loader.load("add-contact.ui")
         self.ui.show()
 
         self.conectDB()
         self.ui.insert_btn.clicked.connect(self.InsertRow)
+        self.ui.cancle_btn.clicked.connect(self.ui.close)
 
     def conectDB(self):
         self.conn = sqlite3.connect('contacts.db')
@@ -70,8 +89,7 @@ class AddContact(QWidget):
             cur.execute("INSERT INTO contacts (name, phonenumber, deleted)"
                         "VALUES('%s', '%s', '%s')" % (''.join(name), ''.join(phonenumber), 0))
 
-            QMessageBox.about(self, 'Connection',
-                              'Data Inserted Successfully!!')
+            self.ui.close()
             self.close()
 
 

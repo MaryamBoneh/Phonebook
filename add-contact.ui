@@ -114,7 +114,7 @@ p, li { white-space: pre-wrap; }
     <string notr="true">background-color:#43425d; border: 0px solid; border-radius: 10px;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="cancle_btn">
    <property name="geometry">
     <rect>
      <x>60</x>
