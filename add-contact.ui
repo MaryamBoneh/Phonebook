@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>204</x>
-     <y>210</y>
+     <y>220</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -40,6 +40,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI Symbol</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -53,11 +54,12 @@
      <x>20</x>
      <y>130</y>
      <width>111</width>
-     <height>16</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI Symbol</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -82,7 +84,7 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>150</y>
+     <y>160</y>
      <width>311</width>
      <height>31</height>
     </rect>
@@ -118,7 +120,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>210</y>
+     <y>220</y>
      <width>91</width>
      <height>31</height>
     </rect>
@@ -130,7 +132,7 @@ p, li { white-space: pre-wrap; }
     <string>Cancel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="caption_label">
    <property name="geometry">
     <rect>
      <x>30</x>
@@ -141,17 +143,15 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="font">
     <font>
-     <family>Kristen ITC</family>
+     <family>Segoe UI Symbol</family>
      <pointsize>12</pointsize>
-     <weight>50</weight>
-     <bold>false</bold>
     </font>
    </property>
    <property name="styleSheet">
     <string notr="true">color:white;</string>
    </property>
    <property name="text">
-    <string>Add contact</string>
+    <string>Add Contact</string>
    </property>
   </widget>
  </widget>
