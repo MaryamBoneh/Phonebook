@@ -1,19 +1,30 @@
 from PySide2.QtWidgets import QMessageBox
-import main
+
+import sqlite3
+from PySide2.QtWidgets import *
 
 
-def deleteContact(self):
+class deleteContact(QWidget):
+    def __init__(self, phonebook):
+        super(deleteContact, self).__init__()
+        self.pb = phonebook
 
-    row = main.phonebook.ui.tableWidget.currentIndex().row()
-    if row < 0:
-        return
+        self.conectDB()
 
-    messageBox = QMessageBox.warning(
-        self, "Warning!", "Do you want to remove the selected contact?", QMessageBox.Ok | QMessageBox.Cancel,)
+        row = self.pb.ui.tableWidget.currentIndex().row()
+        if row < 0:
+            return
 
-    if messageBox == QMessageBox.Ok:
-        sql = 'DELETE FROM contacts WHERE phonenumber=?'
-        cur = self.conn.cursor()
-        cur.execute(sql, (main.phonebook.allSQLRows[row][1],))
-        self.conn.commit()
-        main.phonebook.widget.conectDB()
+        messageBox = QMessageBox.warning(
+            self, "Warning!", "Do you want to remove the selected contact?", QMessageBox.Ok | QMessageBox.Cancel,)
+
+        if messageBox == QMessageBox.Ok:
+            sql = 'DELETE FROM contacts WHERE phonenumber=?'
+            cur = self.conn.cursor()
+            cur.execute(sql, (phonebook.allSQLRows[row][1],))
+            self.conn.commit()
+            self.pb = phonebook
+            self.pb.conectDB()
+
+    def conectDB(self):
+        self.conn = sqlite3.connect('contacts.db')

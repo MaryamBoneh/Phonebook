@@ -19,12 +19,13 @@ class phonebook(QWidget):
         self.ui = loader.load("form.ui")
         self.ui.show()
         self.conectDB()
-        self.ui.add_btn.clicked.connect(self.openAddDg)
-        self.ui.del_btn.clicked.connect(deleteContact.deleteContact)
+        self.ui.add_btn.clicked.connect(self.addContact)
+        self.ui.del_btn.clicked.connect(self.delContact)
         self.ui.edit_btn.clicked.connect(self.editContact)
         self.ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
     def conectDB(self):
+        print('-----in connect db method-----')
         self.conn = sqlite3.connect('contacts.db')
         c = self.conn.cursor()
         c.execute('SELECT * FROM contacts WHERE deleted = 0')
@@ -35,7 +36,6 @@ class phonebook(QWidget):
         self.allSQLRows = c.fetchall()
         self.ui.tableWidget.setRowCount(len(self.allSQLRows))
         self.ui.tableWidget.setColumnCount(2)
-
         row = 0
         while True:
             sqlRow = c2.fetchone()
@@ -47,12 +47,15 @@ class phonebook(QWidget):
             row += 1
         # end show table data
 
-    def openAddDg(self):
-        self.addClass = AddContact.AddContact()
+    def addContact(self):
+        self.addClass = AddContact.AddContact(self)
 
     def editContact(self):
         self.editClass = EditContact.EditContact(
-            self.allSQLRows[self.ui.tableWidget.currentIndex().row()][1])
+            self.allSQLRows[self.ui.tableWidget.currentIndex().row()][1], self)
+            
+    def delContact(self):
+        self.delClass = deleteContact.deleteContact(self)
 
 
 if __name__ == "__main__":
