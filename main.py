@@ -1,6 +1,6 @@
 import sys
 import os
-import sqlite3
+import database
 import AddContact
 import EditContact
 import deleteContact
@@ -25,35 +25,15 @@ class phonebook(QWidget):
         self.ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
 
     def conectDB(self):
-        print('-----in connect db method-----')
-        self.conn = sqlite3.connect('contacts.db')
-        c = self.conn.cursor()
-        c.execute('SELECT * FROM contacts WHERE deleted = 0')
-        c2 = self.conn.cursor()
-        c2.execute('SELECT name, phonenumber FROM contacts WHERE deleted = 0')
-
-        # start show table data
-        self.allSQLRows = c.fetchall()
-        self.ui.tableWidget.setRowCount(len(self.allSQLRows))
-        self.ui.tableWidget.setColumnCount(2)
-        row = 0
-        while True:
-            sqlRow = c2.fetchone()
-            if sqlRow == None:
-                break
-            for col in range(0, 2):
-                self.ui.tableWidget.setItem(
-                    row, col, QTableWidgetItem(str(sqlRow[col])))
-            row += 1
-        # end show table data
+        self.connectdb = database.database(self)
 
     def addContact(self):
         self.addClass = AddContact.AddContact(self)
 
     def editContact(self):
         self.editClass = EditContact.EditContact(
-            self.allSQLRows[self.ui.tableWidget.currentIndex().row()][1], self)
-            
+            self.connectdb.allSQLRows[self.ui.tableWidget.currentIndex().row()][1], self)
+
     def delContact(self):
         self.delClass = deleteContact.deleteContact(self)
 
