@@ -23,7 +23,6 @@ class phonebook(QWidget):
         self.ui.del_btn.clicked.connect(self.delContact)
         self.ui.edit_btn.clicked.connect(self.editContact)
         self.ui.tableWidget.setSelectionBehavior(QAbstractItemView.SelectRows)
-
     def conectDB(self):
         self.connectdb = database.database(self)
 
@@ -31,12 +30,19 @@ class phonebook(QWidget):
         self.addClass = AddContact.AddContact(self)
 
     def editContact(self):
-        self.editClass = EditContact.EditContact(
-            self.connectdb.allSQLRows[self.ui.tableWidget.currentIndex().row()][1], self)
+        if self.ui.tableWidget.currentIndex().row() > 0:
+            self.editClass = EditContact.EditContact(
+                self.connectdb.allSQLRows[self.ui.tableWidget.currentIndex().row()][1], self)
+        else:
+            messageBox = QMessageBox.warning(
+                self, "Error", "Please Select A Contact", QMessageBox.Ok)
 
     def delContact(self):
-        self.delClass = deleteContact.deleteContact(self)
-
+        if self.ui.tableWidget.currentIndex().row() > 0:
+            self.delClass = deleteContact.deleteContact(self)
+        else:
+            messageBox = QMessageBox.warning(
+                self, "Error", "Please Select A Contact", QMessageBox.Ok)
 
 if __name__ == "__main__":
     app = QApplication([])
